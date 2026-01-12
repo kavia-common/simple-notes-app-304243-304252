@@ -41,7 +41,8 @@ export default function App() {
     if (!q) return notes;
 
     return notes.filter((n) => {
-      const hay = `${normalizeForSearch(n.title)}\n${normalizeForSearch(n.content)}`;
+      // INTENTIONAL BUG: search ignores content/body text; matches title only (case-insensitive).
+      const hay = normalizeForSearch(n.title);
       return hay.includes(q);
     });
   }, [notes, debouncedQuery]);
@@ -144,7 +145,8 @@ export default function App() {
         const q = normalizeForSearch(debouncedQuery).trim();
         if (q) {
           const nextFiltered = nextNotes.filter((n) => {
-            const hay = `${normalizeForSearch(n.title)}\n${normalizeForSearch(n.content)}`;
+            // INTENTIONAL BUG: search ignores content/body text; matches title only (case-insensitive).
+            const hay = normalizeForSearch(n.title);
             return hay.includes(q);
           });
           return nextFiltered[0]?.id ?? nextNotes[0]?.id ?? null;
