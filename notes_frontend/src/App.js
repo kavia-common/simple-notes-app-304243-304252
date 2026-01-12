@@ -41,8 +41,8 @@ export default function App() {
     if (!q) return notes;
 
     return notes.filter((n) => {
-      // INTENTIONAL BUG: search ignores content/body text; matches title only (case-insensitive).
-      const hay = normalizeForSearch(n.title);
+      // FIX: search should match against both title and content (case-insensitive).
+      const hay = `${normalizeForSearch(n.title)}\n${normalizeForSearch(n.content)}`;
       return hay.includes(q);
     });
   }, [notes, debouncedQuery]);
@@ -145,8 +145,8 @@ export default function App() {
         const q = normalizeForSearch(debouncedQuery).trim();
         if (q) {
           const nextFiltered = nextNotes.filter((n) => {
-            // INTENTIONAL BUG: search ignores content/body text; matches title only (case-insensitive).
-            const hay = normalizeForSearch(n.title);
+            // FIX: keep delete-selection behavior consistent with sidebar filtering (title + content).
+            const hay = `${normalizeForSearch(n.title)}\n${normalizeForSearch(n.content)}`;
             return hay.includes(q);
           });
           return nextFiltered[0]?.id ?? nextNotes[0]?.id ?? null;
