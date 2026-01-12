@@ -11,10 +11,24 @@ import React from "react";
  *  error: string|null,
  *  onSelect: (id: string) => void,
  *  onCreate: () => void,
- *  onRetry: () => void
+ *  onRetry: () => void,
+ *  searchQuery?: string,
+ *  selectedOutsideResults?: boolean
  * }} props
  */
-export default function Sidebar({ notes, selectedId, loading, error, onSelect, onCreate, onRetry }) {
+export default function Sidebar({
+  notes,
+  selectedId,
+  loading,
+  error,
+  onSelect,
+  onCreate,
+  onRetry,
+  searchQuery = "",
+  selectedOutsideResults = false,
+}) {
+  const hasQuery = Boolean(searchQuery && searchQuery.trim().length > 0);
+
   return (
     <aside className="rb-sidebar" aria-label="Notes">
       <div className="rb-sidebar__top">
@@ -40,12 +54,27 @@ export default function Sidebar({ notes, selectedId, loading, error, onSelect, o
             </div>
           </div>
         ) : notes.length === 0 ? (
-          <div className="rb-empty">
-            <div className="rb-empty__title">No notes yet</div>
-            <div className="rb-empty__body">Create your first note to get started.</div>
-            <button className="rb-btn rb-btn--primary rb-btn--full" onClick={onCreate}>
-              Create a note
-            </button>
+          hasQuery ? (
+            <div className="rb-empty" role="status" aria-live="polite">
+              <div className="rb-empty__title">No notes match your search</div>
+              <div className="rb-empty__body">Try a different keyword or clear the search.</div>
+              <button className="rb-btn rb-btn--secondary rb-btn--full" onClick={() => window.scrollTo(0, 0)}>
+                Keep editing
+              </button>
+            </div>
+          ) : (
+            <div className="rb-empty">
+              <div className="rb-empty__title">No notes yet</div>
+              <div className="rb-empty__body">Create your first note to get started.</div>
+              <button className="rb-btn rb-btn--primary rb-btn--full" onClick={onCreate}>
+                Create a note
+              </button>
+            </div>
+          )
+        ) : selectedOutsideResults ? (
+          <div className="rb-empty rb-empty--compact" role="status" aria-live="polite">
+            <div className="rb-empty__title">Selected note is outside results</div>
+            <div className="rb-empty__body">You can keep editing, or clear search to see it in the list.</div>
           </div>
         ) : null}
       </div>

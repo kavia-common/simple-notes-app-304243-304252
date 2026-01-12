@@ -77,6 +77,83 @@
   gap: 10px;
 }
 
+/* Search */
+.rb-header__search {
+  min-width: 240px;
+  max-width: 420px;
+  width: clamp(220px, 28vw, 420px);
+}
+
+.rb-search {
+  position: relative;
+}
+
+.rb-search__input {
+  width: 100%;
+  background: #fff;
+  border: 1px solid var(--rb-border);
+  border-radius: 999px;
+  padding: 9px 34px 9px 12px;
+  font-size: 14px;
+  color: var(--rb-text);
+  transition: box-shadow 120ms ease, border-color 120ms ease, transform 120ms ease;
+}
+
+.rb-search__input:hover {
+  border-color: rgba(139, 92, 246, 0.35);
+  transform: translateY(-0.5px);
+}
+
+.rb-search__input:focus {
+  outline: none;
+  border-color: rgba(236, 72, 153, 0.65);
+  box-shadow: var(--rb-focus);
+  transform: none;
+}
+
+.rb-search__clear {
+  appearance: none;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--rb-muted);
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 120ms ease, color 120ms ease, box-shadow 120ms ease;
+}
+
+.rb-search__clear:hover {
+  background: rgba(236, 72, 153, 0.08);
+  color: #374151;
+}
+
+.rb-search__clear:focus-visible {
+  outline: none;
+  box-shadow: var(--rb-focus);
+}
+
+.rb-srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .rb-shell {
   max-width: 1200px;
   margin: 0 auto;
@@ -394,6 +471,11 @@
   background: rgba(139, 92, 246, 0.05);
 }
 
+.rb-empty--compact {
+  margin-top: 8px;
+  padding: 10px;
+}
+
 .rb-empty__title {
   font-weight: 900;
   letter-spacing: -0.01em;
@@ -420,5 +502,9 @@
   .rb-sidebar,
   .rb-main {
     min-height: auto;
+  }
+
+  .rb-header__search {
+    display: none; /* keep header tidy on small screens; sidebar still shows filtered list */
   }
 }
